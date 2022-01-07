@@ -2,12 +2,16 @@ import { createReducer, on, Action, createSelector } from "@ngrx/store";
 import { createEntityAdapter, EntityState } from "@ngrx/entity";
 import { BookModel, calculateBooksGrossEarnings } from "src/app/shared/models";
 import { BooksPageActions, BooksApiActions } from "src/app/books/actions";
+import { state } from "@angular/animations";
 
 export interface State extends EntityState<BookModel> {
   activeBookId: string | null;
 }
 
-export const adapter = createEntityAdapter<BookModel>();
+export const adapter = createEntityAdapter<BookModel>({
+  selectId: (model: BookModel) => model.id,
+  sortComparer: (a: BookModel, b: BookModel) => a.name.localeCompare(b.name)
+});
 
 export const initialState: State = adapter.getInitialState({
   activeBookId: null
